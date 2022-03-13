@@ -11,8 +11,8 @@ const ContatoSchema = new mongoose.Schema({
 
 Contato.filterId = async function (id) {
   if (typeof id !== 'string') return
-  const user = await ContatoModel.findById(id)
-  return user
+  const contato = await ContatoModel.findById(id)
+  return contato
 }
 
 const ContatoModel = mongoose.model('Contato', ContatoSchema)
@@ -67,4 +67,16 @@ Contato.prototype.edit = async function (id) {
     new: true
   })
 }
+
+Contato.filterContatos = async function () {
+  const contatos = await ContatoModel.find().sort({ createIn: -1 })
+  return contatos
+}
+
+Contato.delete = async function (id) {
+  if (typeof id !== 'string') return
+  const contatos = await ContatoModel.findOneAndDelete({ _id: id })
+  return contatos
+}
+
 module.exports = Contato
